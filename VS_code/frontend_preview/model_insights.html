@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Model Insights | Smart Medical Diagnosis System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* ================= MODEL INSIGHTS PAGE ================= */
+
+        .insights-page {
+            min-height: 100vh;
+            padding: 145px 7% 90px;
+
+            background:
+                radial-gradient(
+                    circle at 8% 12%,
+                    rgba(104, 76, 255, 0.22),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 92% 18%,
+                    rgba(0, 190, 220, 0.10),
+                    transparent 28%
+                ),
+                #070b1f;
+        }
+
+
+        .insights-header {
+            max-width: 900px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+
+
+        .insights-header h1 {
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.05;
+            color: #ffffff;
+            margin: 15px 0 18px;
+        }
+
+
+        .insights-header h1 span {
+            background:
+                linear-gradient(
+                    90deg,
+                    #c477ff,
+                    #6f72ff
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .insights-header p {
+            color: #9da8c5;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+
+        /* ================= METRIC CARDS ================= */
+
+        .metric-grid {
+            max-width: 1100px;
+            margin: 0 auto 55px;
+
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+        }
+
+
+        .metric-card {
+            padding: 25px 22px;
+
+            border-radius: 18px;
+
+            border:
+                1px solid rgba(160,140,255,0.14);
+
+            background:
+                rgba(255,255,255,0.035);
+
+            transition: 0.3s ease;
+        }
+
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(170,130,255,0.30);
+        }
+
+
+        .metric-icon {
+            font-size: 23px;
+            margin-bottom: 17px;
+        }
+
+
+        .metric-value {
+            color: #ffffff;
+
+            font-size: 28px;
+            font-weight: 900;
+
+            margin-bottom: 7px;
+        }
+
+
+        .metric-name {
+            color: #8994b0;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* ================= SECTION ================= */
+
+        .insight-section {
+            max-width: 1100px;
+            margin: 0 auto 45px;
+        }
+
+
+        .section-title {
+            color: #ffffff;
+
+            font-size: 25px;
+            font-weight: 800;
+
+            margin-bottom: 9px;
+        }
+
+
+        .section-description {
+            color: #8792ae;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* ================= PIPELINE ================= */
+
+        .pipeline {
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 8px;
+
+            align-items: center;
+        }
+
+
+        .pipeline-step {
+            min-height: 110px;
+
+            padding: 17px 10px;
+
+            border-radius: 15px;
+
+            border:
+                1px solid rgba(160,140,255,0.12);
+
+            background:
+                rgba(255,255,255,0.035);
+
+            text-align: center;
+        }
+
+
+        .pipeline-number {
+            width: 30px;
+            height: 30px;
+
+            margin: 0 auto 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(120,85,255,0.16);
+
+            color: #c28aff;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+
+        .pipeline-step h3 {
+            color: #e9ecf7;
+
+            font-size: 11px;
+
+            line-height: 1.4;
+        }
+
+
+        .pipeline-arrow {
+            color: #7868ff;
+
+            font-size: 18px;
+
+            text-align: center;
+        }
+
+
+        /* ================= MODEL TABLE ================= */
+
+        .model-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            overflow: hidden;
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+
+        .model-table th {
+            text-align: left;
+
+            padding: 16px 18px;
+
+            color: #8994b0;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+        }
+
+
+        .model-table td {
+            padding: 17px 18px;
+
+            color: #cbd2e5;
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.055);
+        }
+
+
+        .model-table tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        .selected-model {
+            color: #d39aff !important;
+
+            font-weight: 800;
+        }
+
+
+        .status-badge {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            color: #d6c6ff;
+
+            background:
+                rgba(130,90,255,0.12);
+
+            border:
+                1px solid rgba(150,110,255,0.20);
+        }
+
+
+        /* ================= EVALUATION ================= */
+
+        .evaluation-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+        }
+
+
+        .evaluation-card {
+            padding: 28px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid rgba(160,140,255,0.13);
+
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+
+        .evaluation-card h3 {
+            color: #ffffff;
+
+            font-size: 18px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .metric-row {
+            margin-bottom: 18px;
+        }
+
+
+        .metric-row-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 8px;
+
+            color: #cbd2e5;
+
+            font-size: 12px;
+        }
+
+
+        .metric-row-top span:last-child {
+            color: #c98dff;
+
+            font-weight: 800;
+        }
+
+
+        .metric-bar {
+            height: 7px;
+
+            width: 100%;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.07);
+        }
+
+
+        .metric-fill {
+            height: 100%;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6c52ff,
+                    #cf50ee
+                );
+        }
+
+
+        /* ================= CONFUSION MATRIX ================= */
+
+        .confusion-matrix {
+            max-width: 340px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+        }
+
+
+        .matrix-cell {
+            min-height: 65px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid rgba(255,255,255,0.06);
+
+            color: #cbd2e5;
+
+            font-size: 12px;
+        }
+
+
+        .matrix-title {
+            color: #8792ae;
+
+            font-size: 10px;
+
+            text-align: center;
+
+            padding: 10px;
+        }
+
+
+        .matrix-highlight {
+            color: #d69cff;
+
+            font-weight: 900;
+
+            background:
+                rgba(120,85,255,0.10);
+        }
+
+
+        /* ================= WHY MODEL ================= */
+
+        .why-model {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+        }
+
+
+        .why-card {
+            padding: 25px;
+
+            border-radius: 18px;
+
+            border:
+                1px solid rgba(160,140,255,0.12);
+
+            background:
+                rgba(255,255,255,0.03);
+        }
+
+
+        .why-card h3 {
+            color: #ffffff;
+
+            font-size: 16px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .why-card p {
+            color: #8f9ab5;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ================= TECH STACK ================= */
+
+        .tech-stack {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 11px;
+        }
+
+
+        .tech-item {
+            padding: 10px 15px;
+
+            border-radius: 25px;
+
+            color: #cfd5e8;
+
+            font-size: 12px;
+
+            border:
+                1px solid rgba(160,140,255,0.15);
+
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+
+        /* ================= DISCLAIMER ================= */
+
+        .insight-disclaimer {
+            max-width: 1100px;
+
+            margin: 50px auto 0;
+
+            padding: 17px 20px;
+
+            text-align: center;
+
+            color: #8792ae;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            border-radius: 12px;
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 950px) {
+
+            .metric-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .pipeline {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .pipeline-arrow {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .insights-page {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .metric-grid,
+            .evaluation-grid,
+            .why-model {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline {
+                grid-template-columns: 1fr;
+            }
+
+            .model-table {
+                font-size: 11px;
+            }
+
+            .model-table th,
+            .model-table td {
+                padding: 12px 9px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🩺</span>
+                <span>SMART MEDICAL</span>
+            </a>
+
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="diagnosis.html">
+                    Diagnosis
+                </a>
+
+                <a href="model_insights.html">
+                    Model Insights
+                </a>
+
+            </nav>
+
+
+            <a
+                href="diagnosis.html"
+                class="nav-button"
+            >
+                Start Diagnosis <span>→</span>
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= PAGE ================= -->
+
+    <main class="insights-page">
+
+
+        <!-- HEADER -->
+
+        <section class="insights-header">
+
+            <span class="section-label">
+                MACHINE LEARNING ANALYTICS
+            </span>
+
+            <h1>
+                Model
+                <span>Insights</span>
+            </h1>
+
+            <p>
+                Explore the machine-learning pipeline,
+                evaluated algorithms, model selection,
+                and technical architecture behind the
+                Smart Medical Diagnosis System.
+            </p>
+
+        </section>
+
+
+
+        <!-- ================= METRICS ================= -->
+
+        <section class="metric-grid">
+
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    🧬
+                </div>
+
+                <div class="metric-value">
+                    132
+                </div>
+
+                <div class="metric-name">
+                    Input Features
+                </div>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    🤖
+                </div>
+
+                <div class="metric-value">
+                    4
+                </div>
+
+                <div class="metric-name">
+                    Models Evaluated
+                </div>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    🎯
+                </div>
+
+                <div class="metric-value">
+                    Logistic Regression
+                </div>
+
+                <div class="metric-name">
+                    Selected Model
+                </div>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    🧠
+                </div>
+
+                <div class="metric-value">
+                    Supervised
+                </div>
+
+                <div class="metric-name">
+                    Learning Type
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PIPELINE ================= -->
+
+        <section class="insight-section">
+
+            <h2 class="section-title">
+                ML Pipeline
+            </h2>
+
+            <p class="section-description">
+                The system follows a structured machine-learning
+                workflow from raw symptom data to disease prediction.
+            </p>
+
+
+            <div class="pipeline">
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Dataset
+                    </h3>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Data Cleaning
+                    </h3>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Duplicate Handling
+                    </h3>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        04
+                    </div>
+
+                    <h3>
+                        Model Training
+                    </h3>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        05
+                    </div>
+
+                    <h3>
+                        Evaluation
+                    </h3>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        06
+                    </div>
+
+                    <h3>
+                        Prediction
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= MODEL COMPARISON ================= -->
+
+        <section class="insight-section">
+
+            <h2 class="section-title">
+                Model Comparison
+            </h2>
+
+            <p class="section-description">
+                Multiple supervised-learning algorithms were
+                evaluated before selecting the final model.
+            </p>
+
+
+            <table class="model-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Model
+                        </th>
+
+                        <th>
+                            Learning Type
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td class="selected-model">
+                            Logistic Regression
+                        </td>
+
+                        <td>
+                            Supervised Classification
+                        </td>
+
+                        <td>
+                            <span class="status-badge">
+                                SELECTED
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Random Forest
+                        </td>
+
+                        <td>
+                            Supervised Classification
+                        </td>
+
+                        <td>
+                            Evaluated
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Support Vector Machine
+                        </td>
+
+                        <td>
+                            Supervised Classification
+                        </td>
+
+                        <td>
+                            Evaluated
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Gradient Boosting
+                        </td>
+
+                        <td>
+                            Supervised Classification
+                        </td>
+
+                        <td>
+                            Evaluated
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+
+        <!-- ================= EVALUATION ================= -->
+
+        <section class="insight-section">
+
+            <h2 class="section-title">
+                Model Evaluation
+            </h2>
+
+            <p class="section-description">
+                Evaluation metrics shown below represent the
+                cleaned dataset holdout used during development.
+            </p>
+
+
+            <div class="evaluation-grid">
+
+
+                <!-- Metrics -->
+
+                <div class="evaluation-card">
+
+                    <h3>
+                        Logistic Regression Metrics
+                    </h3>
+
+
+                    <div class="metric-row">
+
+                        <div class="metric-row-top">
+
+                            <span>
+                                Accuracy
+                            </span>
+
+                            <span>
+                                100%
+                            </span>
+
+                        </div>
+
+                        <div class="metric-bar">
+
+                            <div
+                                class="metric-fill"
+                                style="width:100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric-row">
+
+                        <div class="metric-row-top">
+
+                            <span>
+                                Precision
+                            </span>
+
+                            <span>
+                                100%
+                            </span>
+
+                        </div>
+
+                        <div class="metric-bar">
+
+                            <div
+                                class="metric-fill"
+                                style="width:100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric-row">
+
+                        <div class="metric-row-top">
+
+                            <span>
+                                Recall
+                            </span>
+
+                            <span>
+                                100%
+                            </span>
+
+                        </div>
+
+                        <div class="metric-bar">
+
+                            <div
+                                class="metric-fill"
+                                style="width:100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric-row">
+
+                        <div class="metric-row-top">
+
+                            <span>
+                                F1 Score
+                            </span>
+
+                            <span>
+                                100%
+                            </span>
+
+                        </div>
+
+                        <div class="metric-bar">
+
+                            <div
+                                class="metric-fill"
+                                style="width:100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Confusion Matrix -->
+
+                <div class="evaluation-card">
+
+                    <h3>
+                        Confusion Matrix
+                    </h3>
+
+
+                    <div class="confusion-matrix">
+
+                        <div class="matrix-cell"></div>
+
+                        <div class="matrix-title">
+                            Predicted +
+                        </div>
+
+                        <div class="matrix-title">
+                            Predicted −
+                        </div>
+
+
+                        <div class="matrix-title">
+                            Actual +
+                        </div>
+
+                        <div class="matrix-cell matrix-highlight">
+                            Correct
+                        </div>
+
+                        <div class="matrix-cell">
+                            0
+                        </div>
+
+
+                        <div class="matrix-title">
+                            Actual −
+                        </div>
+
+                        <div class="matrix-cell">
+                            0
+                        </div>
+
+                        <div class="matrix-cell matrix-highlight">
+                            Correct
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= WHY MODEL ================= -->
+
+        <section class="insight-section">
+
+            <h2 class="section-title">
+                Why Logistic Regression?
+            </h2>
+
+            <p class="section-description">
+                The final model was selected based on the
+                evaluation results obtained during development.
+            </p>
+
+
+            <div class="why-model">
+
+
+                <div class="why-card">
+
+                    <h3>
+                        📈 Classification Performance
+                    </h3>
+
+                    <p>
+                        Logistic Regression produced the strongest
+                        evaluation results among the tested models
+                        on the cleaned development holdout.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <h3>
+                        ⚡ Efficient Prediction
+                    </h3>
+
+                    <p>
+                        Its lightweight structure makes it suitable
+                        for fast prediction in an interactive
+                        symptom-analysis application.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <h3>
+                        🔍 Interpretable Approach
+                    </h3>
+
+                    <p>
+                        The model provides a relatively transparent
+                        classification approach compared with more
+                        complex ensemble architectures.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <h3>
+                        🧩 Easy Deployment
+                    </h3>
+
+                    <p>
+                        The trained model can be serialized and
+                        integrated into the Streamlit prediction
+                        workflow using a compact model package.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= DATASET ================= -->
+
+        <section class="insight-section">
+
+            <h2 class="section-title">
+                Dataset Overview
+            </h2>
+
+            <p class="section-description">
+                Data preprocessing and duplicate analysis were
+                performed before model training.
+            </p>
+
+
+            <div class="why-model">
+
+
+                <div class="why-card">
+
+                    <h3>
+                        Original Training Data
+                    </h3>
+
+                    <p>
+                        4,920 training rows were available before
+                        duplicate handling.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <h3>
+                        Cleaned Unique Samples
+                    </h3>
+
+                    <p>
+                        304 unique samples remained after removing
+                        duplicate training rows.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= TECHNOLOGY ================= -->
+
+        <section class="insight-section">
+
+            <h2 class="section-title">
+                Technology Stack
+            </h2>
+
+            <p class="section-description">
+                Technologies used across the machine-learning
+                and application layers.
+            </p>
+
+
+            <div class="tech-stack">
+
+                <span class="tech-item">
+                    Python
+                </span>
+
+                <span class="tech-item">
+                    Pandas
+                </span>
+
+                <span class="tech-item">
+                    NumPy
+                </span>
+
+                <span class="tech-item">
+                    Scikit-learn
+                </span>
+
+                <span class="tech-item">
+                    Joblib
+                </span>
+
+                <span class="tech-item">
+                    Streamlit
+                </span>
+
+                <span class="tech-item">
+                    Google Colab
+                </span>
+
+                <span class="tech-item">
+                    GitHub
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= DISCLAIMER ================= -->
+
+        <div class="insight-disclaimer">
+
+            ⚠️ This project is an educational machine-learning
+            prototype for symptom-based decision support.
+            Model evaluation results are specific to the development
+            dataset and should not be interpreted as clinical
+            accuracy or a medical diagnosis.
+
+        </div>
+
+
+    </main>
+
+</body>
+</html>

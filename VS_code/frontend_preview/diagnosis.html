@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Diagnosis | Smart Medical Diagnosis System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* ================= DIAGNOSIS PAGE ================= */
+
+        .diagnosis-page {
+            min-height: 100vh;
+            padding: 145px 7% 90px;
+
+            background:
+                radial-gradient(
+                    circle at 10% 15%,
+                    rgba(100, 55, 210, 0.25),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(0, 170, 220, 0.12),
+                    transparent 30%
+                ),
+                #070b1f;
+        }
+
+        .diagnosis-header {
+            max-width: 900px;
+            margin: 0 auto 45px;
+            text-align: center;
+        }
+
+        .diagnosis-header h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            line-height: 1.05;
+            color: #ffffff;
+            margin-bottom: 18px;
+        }
+
+        .diagnosis-header h1 span {
+            background: linear-gradient(
+                90deg,
+                #c477ff,
+                #7864ff
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .diagnosis-header p {
+            color: #9da8c5;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+
+        /* Main diagnosis card */
+
+        .diagnosis-card {
+            max-width: 1050px;
+            margin: auto;
+
+            padding: 40px;
+
+            border-radius: 24px;
+
+            border: 1px solid rgba(170, 140, 255, 0.16);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.065),
+                    rgba(255,255,255,0.025)
+                );
+
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.25);
+        }
+
+
+        .input-label {
+            display: block;
+
+            color: #ffffff;
+
+            font-size: 17px;
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+
+        /* Search */
+
+        .symptom-search {
+            width: 100%;
+
+            padding: 16px 18px;
+
+            border-radius: 12px;
+
+            border: 1px solid rgba(170,140,255,0.2);
+
+            outline: none;
+
+            background: rgba(255,255,255,0.045);
+
+            color: #ffffff;
+
+            font-size: 15px;
+        }
+
+        .symptom-search::placeholder {
+            color: #78839f;
+        }
+
+        .symptom-search:focus {
+            border-color: #a86cff;
+
+            box-shadow:
+                0 0 0 3px rgba(168,108,255,0.08);
+        }
+
+
+        /* Symptom options */
+
+        .symptom-options {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .symptom-option {
+            padding: 10px 15px;
+
+            border-radius: 30px;
+
+            border: 1px solid rgba(165,135,255,0.18);
+
+            background: rgba(255,255,255,0.035);
+
+            color: #c9d0e7;
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: 0.25s ease;
+        }
+
+        .symptom-option:hover {
+            border-color: #a86cff;
+
+            color: #ffffff;
+
+            background: rgba(160,100,255,0.09);
+        }
+
+        .symptom-option.selected {
+            color: #ffffff;
+
+            border-color: #9c6cff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(105,76,255,0.5),
+                    rgba(210,70,239,0.35)
+                );
+        }
+
+
+        /* Selected symptoms */
+
+        .selected-area {
+            margin-top: 32px;
+
+            padding-top: 25px;
+
+            border-top:
+                1px solid rgba(160,140,255,0.1);
+        }
+
+        .selected-title {
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            margin-bottom: 14px;
+        }
+
+        .selected-symptoms {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            min-height: 40px;
+        }
+
+        .selected-chip {
+            padding: 9px 13px;
+
+            border-radius: 25px;
+
+            background: rgba(139,92,246,0.14);
+
+            border: 1px solid rgba(160,100,255,0.25);
+
+            color: #d8c8ff;
+
+            font-size: 13px;
+        }
+
+
+        /* Analyze button */
+
+        .analyze-wrapper {
+            margin-top: 35px;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .analyze-button {
+            border: none;
+
+            cursor: pointer;
+
+            padding: 15px 30px;
+
+            border-radius: 11px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            letter-spacing: 0.4px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #684cff,
+                    #d548ef
+                );
+
+            box-shadow:
+                0 12px 30px rgba(106,70,255,0.25);
+
+            transition: 0.3s ease;
+        }
+
+        .analyze-button:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 16px 38px rgba(106,70,255,0.4);
+        }
+
+
+        /* ================= RESULT ================= */
+
+        .result-section {
+            max-width: 1050px;
+
+            margin: 35px auto 0;
+
+            display: grid;
+
+            grid-template-columns:
+                1.15fr 0.85fr;
+
+            gap: 20px;
+        }
+
+        .result-card {
+            padding: 30px;
+
+            border-radius: 20px;
+
+            border: 1px solid rgba(160,140,255,0.14);
+
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+        .result-label {
+            color: #aeb8d3;
+
+            font-size: 12px;
+
+            letter-spacing: 1.5px;
+
+            font-weight: 800;
+        }
+
+        .disease-name {
+            margin-top: 12px;
+
+            color: #ffffff;
+
+            font-size: 32px;
+
+            font-weight: 900;
+        }
+
+        .probability {
+            margin-top: 8px;
+
+            color: #c477ff;
+
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+
+        /* Probability bars */
+
+        .prediction-row {
+            margin-top: 20px;
+        }
+
+        .prediction-top {
+            display: flex;
+            justify-content: space-between;
+
+            color: #d8ddef;
+
+            font-size: 13px;
+
+            margin-bottom: 8px;
+        }
+
+        .prediction-bar {
+            width: 100%;
+            height: 7px;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,0.08);
+
+            overflow: hidden;
+        }
+
+        .prediction-fill {
+            height: 100%;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6d4cff,
+                    #d548ef
+                );
+        }
+
+
+        /* Summary */
+
+        .summary-card {
+            margin-top: 20px;
+
+            padding: 24px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(110,80,220,0.07);
+
+            border:
+                1px solid rgba(160,120,255,0.12);
+        }
+
+        .summary-card h3 {
+            color: #ffffff;
+
+            font-size: 17px;
+
+            margin-bottom: 10px;
+        }
+
+        .summary-card p {
+            color: #9da8c5;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* Disclaimer */
+
+        .medical-note {
+            max-width: 1050px;
+
+            margin: 25px auto 0;
+
+            padding: 16px 20px;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.025);
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            color: #8993ae;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            text-align: center;
+        }
+
+
+        @media (max-width: 800px) {
+
+            .diagnosis-page {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .diagnosis-card {
+                padding: 25px;
+            }
+
+            .result-section {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🩺</span>
+                <span>SMART MEDICAL</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="diagnosis.html">Diagnosis</a>
+                <a href="index.html#highlights">Model Insights</a>
+            </nav>
+
+            <a href="diagnosis.html" class="nav-button">
+                Start Diagnosis <span>→</span>
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= DIAGNOSIS ================= -->
+
+    <main class="diagnosis-page">
+
+        <section class="diagnosis-header">
+
+            <span class="section-label">
+                AI SYMPTOM ANALYSIS
+            </span>
+
+            <h1>
+                Analyze Your
+                <span>Symptoms</span>
+            </h1>
+
+            <p>
+                Select the symptoms you are experiencing and
+                explore the machine-learning based prediction.
+            </p>
+
+        </section>
+
+
+        <!-- INPUT CARD -->
+
+        <section class="diagnosis-card">
+
+            <label class="input-label">
+                Select Symptoms
+            </label>
+
+            <input
+                type="text"
+                class="symptom-search"
+                placeholder="Search symptoms..."
+                id="symptomSearch"
+            >
+
+
+            <!-- Sample symptom options -->
+
+            <div class="symptom-options" id="symptomOptions">
+
+                <div class="symptom-option">
+                    Itching
+                </div>
+
+                <div class="symptom-option">
+                    Skin Rash
+                </div>
+
+                <div class="symptom-option">
+                    Headache
+                </div>
+
+                <div class="symptom-option">
+                    Fever
+                </div>
+
+                <div class="symptom-option">
+                    Fatigue
+                </div>
+
+                <div class="symptom-option">
+                    Nausea
+                </div>
+
+                <div class="symptom-option">
+                    Joint Pain
+                </div>
+
+                <div class="symptom-option">
+                    Dizziness
+                </div>
+
+            </div>
+
+
+            <!-- Selected -->
+
+            <div class="selected-area">
+
+                <div class="selected-title">
+                    Selected Symptoms
+                </div>
+
+                <div
+                    class="selected-symptoms"
+                    id="selectedSymptoms"
+                >
+                    <span class="selected-chip">
+                        No symptoms selected
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- Analyze -->
+
+            <div class="analyze-wrapper">
+
+                <button
+                    class="analyze-button"
+                    onclick="showResults()"
+                >
+                    🔍 ANALYZE SYMPTOMS
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RESULTS ================= -->
+
+        <section
+            class="result-section"
+            id="results"
+            style="display:none;"
+        >
+
+            <div>
+
+                <div class="result-card">
+
+                    <div class="result-label">
+                        PREDICTED CONDITION
+                    </div>
+
+                    <div class="disease-name">
+                        Sample Prediction
+                    </div>
+
+                    <div class="probability">
+                        Prediction Probability: 94.6%
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <h3>
+                        Analysis Summary
+                    </h3>
+
+                    <p>
+                        The selected symptoms were processed
+                        through the machine-learning prediction
+                        pipeline. The result shown here is a
+                        frontend demonstration and will later
+                        connect with the trained model.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <div class="result-label">
+                    TOP PREDICTIONS
+                </div>
+
+
+                <div class="prediction-row">
+
+                    <div class="prediction-top">
+                        <span>Prediction 1</span>
+                        <span>94.6%</span>
+                    </div>
+
+                    <div class="prediction-bar">
+                        <div
+                            class="prediction-fill"
+                            style="width:94.6%;"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="prediction-row">
+
+                    <div class="prediction-top">
+                        <span>Prediction 2</span>
+                        <span>3.8%</span>
+                    </div>
+
+                    <div class="prediction-bar">
+                        <div
+                            class="prediction-fill"
+                            style="width:3.8%;"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="prediction-row">
+
+                    <div class="prediction-top">
+                        <span>Prediction 3</span>
+                        <span>1.6%</span>
+                    </div>
+
+                    <div class="prediction-bar">
+                        <div
+                            class="prediction-fill"
+                            style="width:1.6%;"
+                        ></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Disclaimer -->
+
+        <div class="medical-note">
+
+            ⚠️ Educational decision-support prototype only.
+            This system is not a substitute for professional
+            medical advice, diagnosis, or treatment.
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        const options =
+            document.querySelectorAll(".symptom-option");
+
+        const selectedContainer =
+            document.getElementById("selectedSymptoms");
+
+        let selectedSymptoms = [];
+
+
+        options.forEach(option => {
+
+            option.addEventListener("click", () => {
+
+                const symptom =
+                    option.textContent.trim();
+
+                if (selectedSymptoms.includes(symptom)) {
+
+                    selectedSymptoms =
+                        selectedSymptoms.filter(
+                            item => item !== symptom
+                        );
+
+                    option.classList.remove("selected");
+
+                } else {
+
+                    selectedSymptoms.push(symptom);
+
+                    option.classList.add("selected");
+                }
+
+                updateSelected();
+
+            });
+
+        });
+
+
+        function updateSelected() {
+
+            selectedContainer.innerHTML = "";
+
+            if (selectedSymptoms.length === 0) {
+
+                selectedContainer.innerHTML =
+                    '<span class="selected-chip">No symptoms selected</span>';
+
+                return;
+            }
+
+
+            selectedSymptoms.forEach(symptom => {
+
+                const chip =
+                    document.createElement("span");
+
+                chip.className = "selected-chip";
+
+                chip.textContent = symptom;
+
+                selectedContainer.appendChild(chip);
+
+            });
+
+        }
+
+
+        function showResults() {
+
+            if (selectedSymptoms.length === 0) {
+
+                alert("Please select at least one symptom.");
+
+                return;
+            }
+
+            document.getElementById("results").style.display =
+                "grid";
+
+            document.getElementById("results")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+        /* Search */
+
+        const search =
+            document.getElementById("symptomSearch");
+
+        search.addEventListener("input", () => {
+
+            const value =
+                search.value.toLowerCase();
+
+            options.forEach(option => {
+
+                const text =
+                    option.textContent.toLowerCase();
+
+                option.style.display =
+                    text.includes(value)
+                    ? "inline-flex"
+                    : "none";
+
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
